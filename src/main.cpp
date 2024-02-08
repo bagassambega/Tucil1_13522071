@@ -50,7 +50,7 @@ void inputFromFile() {
     string filename;
     ifstream file;
     while (true) {
-        cout << "Masukkan nama file: ";
+        cout << "Masukkan nama file:";
         cin >> filename;
         filename = "../test/" + filename;
         file.open(filename);
@@ -86,12 +86,14 @@ void inputFromFile() {
     displayMatrix(matrix);
 
     i = 0;
+    int reward;
     while (getline(file, code)) {
-        if (i % 2 == 1) {
-            sequences_reward.push_back(stoi(code));
-        } else {
-            temp_sequences.push_back(code);
+        if (i % 2 != 0) {
+            cout << code << i;
+            reward = stoi(code);
+            sequences_reward.push_back(reward);
         }
+        i++;
     }
 
 //    for (i = 0; i < number_of_sequences * 2; i++) {
