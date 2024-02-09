@@ -29,6 +29,14 @@ bool checkSequence(vector <string> currentPath, int checkSequenceNumber) {
     return false;
 }
 
+string stringMaker(vector <string> currentPath) {
+    string path;
+    for (int i = 0; i < currentPath.size(); i++) {
+        path += currentPath[i];
+    }
+    return path;
+}
+
 
 bool checkPathAvailable(vector <vector <int>> seenCoordinates, int row, int col) {
     for (auto &seenCoordinate : seenCoordinates) {
@@ -41,11 +49,8 @@ bool checkPathAvailable(vector <vector <int>> seenCoordinates, int row, int col)
 
 
 void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath, vector <vector <int>> seenCoordinates) {
-    for (int i = 0; i < currentPath.size(); i++) {
-        cout << currentPath[i] << " " << seenCoordinates[i][0] << " " << seenCoordinates[i][1] << " ";
-    }
-    cout << endl;
     if (currentPath.size() == bufferLength) {
+        cout << "push" << endl;
         allPaths.push_back(currentPath);
         return;
     }
@@ -57,6 +62,7 @@ void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath
                 if (matrix[i][currCol] == sequences[j][0]) {
                     currentPath.push_back(matrix[i][currCol]);
                     seenCoordinates.push_back({i, currCol});
+                    cout << "vertical" << " row " << i << " col " << currCol << " " << stringMaker(currentPath) << endl;
                     generateVerticalFirst(i, currCol, currentPath, {{i, 0}});
                 }
             }
@@ -64,7 +70,6 @@ void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath
     }
     // Find horizontally after vertical move
     else if (currentPath.size() % 2 == 1) {
-        cout << "horizontal" << " ";
         for (int i = 0; i < matrix[currRow].size(); i++) {
             if (!checkPathAvailable(seenCoordinates, currRow, i)) {
                 continue; // Skip the already added current row and column
@@ -73,14 +78,16 @@ void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath
                 if (checkSequence(currentPath, j)) {
                     currentPath.push_back(matrix[currRow][i]);
                     seenCoordinates.push_back({currRow, i});
+                    cout << "horizontal " << "row " << currRow << " col " << i << " " << stringMaker(currentPath) << endl;
                     generateVerticalFirst(currRow, i, currentPath, seenCoordinates);
                 }
+
+
             }
         }
     }
     // Find vertically, aside of the first move
     else {
-        cout << "vertical" << " ";
         for (int i = 0; i < matrix.size(); i++) {
             if (!checkPathAvailable(seenCoordinates, i, currCol)) {
                 continue;
@@ -89,6 +96,7 @@ void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath
                 if (checkSequence(currentPath, j)) {
                     currentPath.push_back(matrix[i][currCol]);
                     seenCoordinates.push_back({i, currCol});
+                    cout << "vertical " << "row " << i << " col " << currCol << " " << stringMaker(currentPath) << endl;
                     generateVerticalFirst(i, currCol, currentPath, {{i, 0}});
                 }
             }
