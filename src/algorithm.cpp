@@ -9,7 +9,7 @@ vector <vector <string>> matrix;
 vector <vector <string>> sequences;
 vector <int> rewards;
 int bufferLength;
-
+int maxReward = 0;
 
 bool checkSequence(vector <string> currentPath, int checkSequenceNumber) {
     bool found = true;
@@ -37,6 +37,14 @@ string stringMaker(vector <string> currentPath) {
     return path;
 }
 
+void showCoordinate(vector <vector <int>> seenCoordinates) {
+    cout << "{";
+    for (int i = 0; i < seenCoordinates.size(); i++) {
+        cout << "(" << seenCoordinates[i][0] << ", " << seenCoordinates[i][1] << "), ";
+    }
+    cout << "} ";
+}
+
 
 bool checkPathAvailable(vector <vector <int>> seenCoordinates, int row, int col) {
     for (auto &seenCoordinate : seenCoordinates) {
@@ -48,7 +56,7 @@ bool checkPathAvailable(vector <vector <int>> seenCoordinates, int row, int col)
 }
 
 
-void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath, vector <vector <int>> seenCoordinates) {
+void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath, vector <vector <int>> seenCoordinates, bool isVertical) {
     if (currentPath.size() == bufferLength) {
         cout << "push" << endl;
         allPaths.push_back(currentPath);
@@ -57,32 +65,26 @@ void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath
     
     // First find, vertically
     if (currentPath.empty()) {
-        for (int i = 0; i < matrix.size(); i++) {
-            for (int j = 0; j < sequences.size(); j++) {
-                if (matrix[i][currCol] == sequences[j][0]) {
-                    currentPath.push_back(matrix[i][currCol]);
-                    seenCoordinates.push_back({i, currCol});
-                    cout << "vertical" << " row " << i << " col " << currCol << " " << stringMaker(currentPath) << endl;
-                    generateVerticalFirst(i, currCol, currentPath, {{i, 0}});
-                }
-            }
-        }
+        isVertical = true;
+        generateVerticalFirst(currRow, currCol, {matrix[currRow][currCol]}, {{currRow, currCol}}, isVertical);
     }
     // Find horizontally after vertical move
-    else if (currentPath.size() % 2 == 1) {
+    else if (!isVertical) {
         for (int i = 0; i < matrix[currRow].size(); i++) {
             if (!checkPathAvailable(seenCoordinates, currRow, i)) {
+                cout << "skip " << currRow << " " << i << " ";
                 continue; // Skip the already added current row and column
             }
             for (int j = 0; j < sequences.size(); j++) {
                 if (checkSequence(currentPath, j)) {
                     currentPath.push_back(matrix[currRow][i]);
                     seenCoordinates.push_back({currRow, i});
+                    showCoordinate(seenCoordinates);
                     cout << "horizontal " << "row " << currRow << " col " << i << " " << stringMaker(currentPath) << endl;
-                    generateVerticalFirst(currRow, i, currentPath, seenCoordinates);
+                    isVertical = true;
+                    generateVerticalFirst(currRow, i, currentPath, seenCoordinates, isVertical);
+                    seenCoordinates.pop_back();
                 }
-
-
             }
         }
     }
@@ -90,21 +92,31 @@ void generateVerticalFirst(int currRow, int currCol, vector <string> currentPath
     else {
         for (int i = 0; i < matrix.size(); i++) {
             if (!checkPathAvailable(seenCoordinates, i, currCol)) {
+                cout << "skip " << i << " " << currCol << " ";
                 continue;
             }
             for (int j = 0; j < sequences.size(); j++) {
                 if (checkSequence(currentPath, j)) {
                     currentPath.push_back(matrix[i][currCol]);
                     seenCoordinates.push_back({i, currCol});
+                    showCoordinate(seenCoordinates);
                     cout << "vertical " << "row " << i << " col " << currCol << " " << stringMaker(currentPath) << endl;
-                    generateVerticalFirst(i, currCol, currentPath, {{i, 0}});
+                    isVertical = false;
+                    generateVerticalFirst(i, currCol, currentPath, seenCoordinates, isVertical);
+                    seenCoordinates.pop_back();
                 }
             }
         }
     }
 }
 
+void findPath(int currentBuffer, int currentRow, int currentCol, vector <string> currentPath, vector <vector <int>> seenCoordinates) {
+    if (currentBuffer == bufferLength) {
+        allPaths.push_back(currentPath);
+        return;
+    }
 
+}
 
 int main() {
     matrix =
@@ -129,7 +141,7 @@ int main() {
     bufferLength = 7;
     vector <vector <int>> seenCoordinates;
 
-    generateVerticalFirst(0, 0, foundSequences, seenCoordinates);
+    generateVerticalFirst(0, 0, foundSequences, seenCoordinates, true);
 
     for (int i = 0; i < allPaths.size(); i++) {
         for (int j = 0; j < allPaths[i].size(); j++) {
