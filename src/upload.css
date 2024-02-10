@@ -1,0 +1,12 @@
+body {
+    height: 200vh;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    scroll-snap-type: y mandatory;
+}
+
+#first, #second {
+    height: 100vh;
+    scroll-snap-align: start;
+}
