@@ -98,6 +98,7 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
 }
 
 function solve() {
+    document.getElementById("processing").style.display = "inline";
     let start = new Date();
     findPath(0, 0, 0, [], [], []);
     let end = new Date();
@@ -105,20 +106,24 @@ function solve() {
     console.log(pathResult);
     console.log(coordinateResult);
     timeElapsed = end - start;
-    let showMaxReward = document.getElementById("maxReward");
-    showMaxReward.innerHTML = maxReward;
-
-    let innerData = "";
-    let showSequence = document.getElementById("sequence");
+    let hasil = "";
     for (let i = 0; i < pathResult.length; i++) {
-        innerData += pathResult[i] + `(${coordinateResult[i][1] + 1}, ${coordinateResult[i][0] + 1})`
-        + "<br>";
+        hasil += pathResult[i] + " ";
     }
-    showSequence.innerHTML = innerData;
+    hasil += `(${maxReward}) <br>`;
+    for (let i = 0; i < coordinateResult.length; i++) {
+        hasil += `(${coordinateResult[i][1] + 1}, ${coordinateResult[i][0] + 1}) `;
+    }
+    hasil += `<br>Waktu pemrosesan: ${timeElapsed} ms`;
+    document.getElementById("sequence").innerHTML = hasil;
+    document.getElementById("download").hidden = false;
 
-    let showTime = document.getElementById("time");
-    showTime.innerHTML = `${end - start} ms`;
+    for (let i = 0; i < coordinateResult.length; i++) {
+        let cell = document.getElementById(`${coordinateResult[i][0]}-${coordinateResult[i][1]}`);
+        cell.style.backgroundColor = "red";
+    }
 
+    setTimeout(function() {document.getElementById("processing").style.display = "none"}, 10000);
 }
 
 
@@ -130,55 +135,67 @@ function upload() {
     const reader = new FileReader();
 
     reader.onload = function(e) {
-        const content = e.target.result;
-        const lines = content.split(/\r\n|\r|\n/).map(line => line.replace(/\r|\n/g, ''))
-        console.log(lines);
-        bufferLength = parseInt(lines[0]);
-        let splitInt = lines[1].split(' ');
-        col = parseInt(splitInt[0]);
-        row = parseInt(splitInt[1]);
-        for (let i = 0; i < row; i++) {
-            let splitInt = lines[i + 2].split(' ');
-            let temp = [];
-            for (let j = 0; j < col; j++) {
-                temp.push(splitInt[j]);
+        try {
+            const content = e.target.result;
+            const lines = content.split(/\r\n|\r|\n/).map(line => line.replace(/\r|\n/g, ''))
+            console.log(lines);
+            bufferLength = parseInt(lines[0]);
+            let splitInt = lines[1].split(' ');
+            col = parseInt(splitInt[0]);
+            row = parseInt(splitInt[1]);
+            for (let i = 0; i < row; i++) {
+                let splitInt = lines[i + 2].split(' ');
+                let temp = [];
+                for (let j = 0; j < col; j++) {
+                    temp.push(splitInt[j]);
+                }
+                matrix.push(temp);
             }
-            matrix.push(temp);
-        }
 
-        let now = row + 2;
-        sequenceNumber = parseInt(lines[now]);
-        now += 1;
-        console.log(now);
-        for (let i = 0; i < sequenceNumber * 2; i++) {
-            if (i % 2 === 0) {
-                console.log(lines[now + i], now + i);
-                sequences.push(lines[now + i].split(' '));
+            let now = row + 2;
+            sequenceNumber = parseInt(lines[now]);
+            now += 1;
+            console.log(now);
+            for (let i = 0; i < sequenceNumber * 2; i++) {
+                if (i % 2 === 0) {
+                    console.log(lines[now + i], now + i);
+                    sequences.push(lines[now + i].split(' '));
+                } else {
+                    rewardArray.push(parseInt(lines[now + i]));
+                }
             }
-            else {
-                rewardArray.push(parseInt(lines[now + i]));
-            }
-        }
 
-        let matriks = document.getElementById("matriks");
-        let innerData = "";
-        for (let i = 0; i < row; i++) {
-            for (let j = 0; j < col; j++) {
-                innerData += matrix[i][j] + " ";
-            }
-            innerData += "<br>";
-        }
-        matriks.innerHTML = innerData;
+            // Show in HTML
 
-        let sekuens = document.getElementById("sekuens");
-        innerData = "";
-        for (let i = 0; i < sequenceNumber; i++) {
-            for (let j = 0; j < sequences[i].length; j++) {
-                innerData += sequences[i][j] + " ";
+            let matriks = document.getElementById("matriks");
+            let innerData = "";
+            matriks.style.width = `${col * 3}rem`;
+            matriks.style.height = `${row * 2}rem`;
+            matriks.style.gridTemplateColumns = `repeat(${col}, 1fr)`;
+            matriks.style.gridTemplateRows = `repeat(${row}, 1fr)`;
+            matriks.style.gap = `${1 / row}rem ${1 / (col * 2)}rem`;
+            for (let i = 0; i < matrix.length; i++) {
+                for (let j = 0; j < matrix[i].length; j++) {
+                    innerData += `<div class='cell ${i} ${j}' id='${i}-${j}'>${matrix[i][j]}</div>`;
+                }
             }
-            innerData += ": " + rewardArray[i] + "<br>";
+
+            matriks.innerHTML = innerData;
+
+            let sekuens = document.getElementById("sekuens");
+            innerData = "";
+            for (let i = 0; i < sequenceNumber; i++) {
+                for (let j = 0; j < sequences[i].length; j++) {
+                    innerData += sequences[i][j] + " ";
+                }
+                innerData += ": " + rewardArray[i] + "<br>";
+            }
+            sekuens.innerHTML = innerData;
+        } catch (e) {
+            document.getElementById("fileChosen").textContent = "Terdapat kesalahan pada pembacaan file!";
+            console.log(e);
+            return;
         }
-        sekuens.innerHTML = innerData;
     };
 
     console.log(matrix);
@@ -208,3 +225,11 @@ function download() {
     a.click();
     window.URL.revokeObjectURL(url);
 }
+
+
+document.getElementById("fileInput").addEventListener("change", function() {
+    document.getElementById("fileChosen").textContent = this.files[0].name;
+    upload();
+    document.getElementById("solve").hidden = false;
+    document.getElementsByClassName("result")[0].style.display = "inline";
+})

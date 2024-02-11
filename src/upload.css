@@ -16,7 +16,6 @@ body {
     justify-items: center;
 }
 
-
 #first, #second {
     height: 90vh;
     width: 80%;
@@ -54,18 +53,19 @@ body {
 }
 
 #first label {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    padding: 1vh 2vw;
+    background: #f85656;
+    color: #fdfdfd;
     font-weight: 600;
+    border-radius: .5rem;
+    cursor: pointer;
 }
 
 #first input {
     width: 90%;
     padding: 1vh 1vw;
     margin: 1vh 0;
-    border-radius: .5rem;
-    cursor: pointer;
-    background: #3b3b3b;
-    border: 1px solid #d0ed57;
 }
 
 #first button {
@@ -75,13 +75,94 @@ body {
     padding: 1vh 1.5vw;
     font-size: 1.1rem;
     font-family: 'Lato', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
-    margin-top: 2vh;
     border-radius: .5rem;
     border: solid 1px #d0ed57;
     transition: all .3s ease-in-out;
 }
 
+#first .box {
+    border: solid .1rem #d0ed57;
+    padding: 10vh 1vw 5vh;
+    border-radius: .5rem;
+}
+
 #first button:hover {
     background-color: #3b3b3b;
     color: #d0ed57;
+}
+
+#first .box p {
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+    font-size: 1.1rem;
+    padding-top: 1vh;
+    font-weight: 500;
+    color: #d0ed57;
+}
+
+#second .result {
+    display: none;
+}
+
+#second h4 {
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+}
+
+.matriks {
+    height: 25vh;
+    padding: 2vh 1vw;
+    border: solid .07rem #d0ed57;
+    display: grid;
+    gap: .1rem;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.content p {
+    display: none;
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+
+}
+
+.cell {
+    font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #3d3d3d;
+    width: 2.5rem;
+    height: 1.5rem;
+    text-align: center;
+}
+
+.sekuens {
+    height: auto;
+    border: solid .07rem #d0ed57;
+    font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+    padding: 1vh 0 1vh 1vw;
+}
+
+.content #solve, .result #download {
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #d0ed57;
+    padding: .8vh 1.2vw;
+    margin: 2vh 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+    border-radius: .5rem;
+    border: solid 1px #d0ed57;
+    transition: all .2s ease-in-out;
+}
+
+.content #solve:hover, .result #download:hover{
+    background-color: #3b3b3b;
+    color: #d0ed57;
+}
+
+.result #sequence {
+    border: solid .07rem #d0ed57;
+    padding: 1vh 0 1vh 1vw;
+    font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
 }

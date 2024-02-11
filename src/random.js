@@ -8,16 +8,60 @@ let maxReward = 0;
 let pathResult = [];
 let coordinateResult = [];
 let sequenceSize;
+let numSequence;
+let row, col;
+
+function printGenerated() {
+    let matriks = document.getElementById("matriks");
+    let innerData = "";
+    matriks.style.width = `${col * 3}rem`;
+    matriks.style.height = `${row * 2}rem`;
+    matriks.style.gridTemplateColumns = `repeat(${col}, 1fr)`;
+    matriks.style.gridTemplateRows = `repeat(${row}, 1fr)`;
+    matriks.style.gap = `${1 / row}rem ${1 / (col * 2)}rem`;
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            innerData += `<div class='cell ${i} ${j}' id='${i}-${j}'>${matrix[i][j]}</div>`;
+        }
+    }
+
+    matriks.innerHTML = innerData;
+
+    let sekuens = document.getElementById("sekuens");
+    innerData = "";
+    console.log(sequences);
+    for (let i = 0; i < numSequence; i++) {
+        for (let j = 0; j < sequences[i].length; j++) {
+            innerData += sequences[i][j] + " ";
+        }
+        innerData += ": " + rewardArray[i] + "<br>";
+    }
+    sekuens.innerHTML = innerData;
+}
 
 
 function generate() {
-    let row = document.getElementById('rowMatrix').value;
-    let col = document.getElementById('colMatrix').value;
-    bufferLength = document.getElementById('bufferSize').value;
-    let token = document.getElementById('token').value;
+    let token;
+    try {
+        row = document.getElementById('rowMatrix').value;
+        col = document.getElementById('colMatrix').value;
+        bufferLength = document.getElementById('bufferSize').value;
+        token = document.getElementById('token').value;
+        sequenceSize = document.getElementById('sequenceSize').value;
+        numSequence = document.getElementById('numSeq').value;
+    } catch (e) {
+        document.getElementById('inputError').innerHTML = "Seluruh input harus diisi";
+        console.log(e);
+        return;
+    }
+    if (row <= 0 || col <= 0 || bufferLength <= 0 || sequenceSize <= 0 || sequenceSize <= 0 || numSequence <= 0 || token === "") {
+        document.getElementById('inputError').innerHTML = "Input tidak boleh kosong dan untuk angka harus bernilai > 0!";
+        return;
+    }
     let tokenArray = token.split(' ');
-    sequenceSize = document.getElementById('sequenceSize').value;
 
+    matrix = [];
+    sequences = [];
     for (let i = 0; i < row; i++) {
         let temp = [];
         for (let j = 0; j < col; j++) {
@@ -26,7 +70,7 @@ function generate() {
         matrix.push(temp);
     }
 
-    for (let i = 0; i < sequenceSize; i++) {
+    for (let i = 0; i < numSequence; i++) {
         let temp = [];
         for (let j = 0; j < 1 + Math.floor(Math.random() * sequenceSize); j++) {
             temp.push(tokenArray[Math.floor(Math.random() * tokenArray.length)]);
@@ -34,6 +78,9 @@ function generate() {
         sequences.push(temp);
         rewardArray.push(Math.floor(Math.random() * 10) * 5);
     }
+
+    printGenerated();
+
     console.log(matrix);
     console.log(sequences);
     console.log(rewardArray);
