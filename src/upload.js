@@ -11,6 +11,7 @@ var coordinateResult = [];
 var row;
 var col;
 var sequenceNumber;
+var timeElapsed;
 
 
 function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates, coordinateNow) {
@@ -103,14 +104,14 @@ function solve() {
     console.log(maxReward);
     console.log(pathResult);
     console.log(coordinateResult);
-    console.log(`${end - start} ms`);
+    timeElapsed = end - start;
     let showMaxReward = document.getElementById("maxReward");
     showMaxReward.innerHTML = maxReward;
 
     let innerData = "";
     let showSequence = document.getElementById("sequence");
     for (let i = 0; i < pathResult.length; i++) {
-        innerData += pathResult[i] += `(${coordinateResult[i][1] + 1}, ${coordinateResult[i][0] + 1})`
+        innerData += pathResult[i] + `(${coordinateResult[i][1] + 1}, ${coordinateResult[i][0] + 1})`
         + "<br>";
     }
     showSequence.innerHTML = innerData;
@@ -189,22 +190,21 @@ function upload() {
 
 
 function download() {
-    let data = "Max Reward: " + maxReward + "\n";
-    data += "Path: ";
+    let data = maxReward + "\n";
     for (let i = 0; i < pathResult.length; i++) {
         data += pathResult[i] + " ";
     }
     data += "\n";
-    data += "Coordinate: ";
     for (let i = 0; i < coordinateResult.length; i++) {
-        data += "(" + (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + ") ";
+        data += (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + "\n";
     }
     data += "\n";
+    data += timeElapsed + " ms";
     let blob = new Blob([data], {type: 'text/plain'});
     let url = window.URL.createObjectURL(blob);
     let a = document.createElement('a');
     a.href = url;
-    a.download = 'result.txt';
+    a.download = 'solution.txt';
     a.click();
     window.URL.revokeObjectURL(url);
 }

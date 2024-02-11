@@ -4,18 +4,14 @@
     <meta charset="UTF-8">
     <title>Cyberpunk 2077 Breach Protocol Solver</title>
     <link href="upload.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div id="first">
-        <div class="header">
-            <h1>Upload File</h1>
-            <h3>Breach Protocol Solver</h3>
-        </div>
-        <div class="container">
-            <div class="instruction">
+    <div class="container">
+        <div id="first">
+            <div class="card instruction">
                 <h2>Instruksi</h2>
-                <p>1. Upload file .txt yang berisi kode Breach Protocol.</p>
-                <p>2. Format file .txt adalah sebagai berikut:</p>
+                <p>Upload file .txt yang berisi kode Breach Protocol dengan format:</p>
                 <ul>
                     <li>Ukuran buffer</li>
                     <li>Lebar matriks [spasi] Tinggi matriks</li>
@@ -26,36 +22,36 @@
                     <li>Sekuens 2</li>
                     <li>Reward sekuens 2</li>
                     ...
-                    <li>Sekuens n</li>
-                    <li>Reward sekuens n</li>
+                    <li>Sekuens <em>n</em></li>
+                    <li>Reward sekuens <em>n</em></li>
                 </ul>
             </div>
-            <div class="box">
+            <div class="card box">
                 <label for="fileInput">Upload file</label>
-                <input type="file" name="fileInput" id="fileInput">
-                <button id="upload" onclick="upload()"><a href="#second">Upload </a></button>
+                <input type="file" name="fileInput" id="fileInput" accept=".txt"><br>
+                <button id="upload" onclick="upload()">Upload </button>
             </div>
         </div>
-    </div>
 
-    <div id="second">
-        <div class="content">
-            <h1>Data</h1>
-            <h4>Matriks</h4>
-            <p id="matriks"></p>
-            <h4>Sekuens dan reward</h4>
-            <p id="sekuens"></p>
-            <button id="solve" onclick="solve()">Solve</button>
-        </div>
-        <div class="result">
-            <h1>Hasil</h1>
-            <h4>Maximum Reward</h4>
-            <p id="maxReward"></p>
-            <h4>Sequence</h4>
-            <p id="sequence"></p>
-            <h4>Waktu eksekusi</h4>
-            <p id="time"></p>
-            <button id="download" onclick="download()">Download Solution</button>
+        <div id="second">
+            <div class="card content">
+                <h2>Data</h2>
+                <h4>Matriks</h4>
+                <p id="matriks"></p>
+                <h4>Sekuens dan reward</h4>
+                <p id="sekuens"></p>
+                <button id="solve" onclick="solve()">Solve</button>
+            </div>
+            <div class="card result">
+                <h2>Hasil</h2>
+                <h4>Maximum Reward</h4>
+                <p id="maxReward"></p>
+                <h4>Sequence</h4>
+                <p id="sequence"></p>
+                <h4>Waktu eksekusi</h4>
+                <p id="time"></p>
+                <button id="download" onclick="download()">Download Solution</button>
+            </div>
         </div>
     </div>
     <script src="upload.js"></script>

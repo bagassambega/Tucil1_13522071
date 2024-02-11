@@ -1,14 +1,87 @@
 body {
-    height: 200vh;
+    height: 100vh;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     scroll-snap-type: y mandatory;
     background-color: #2f2d2d;
-    color: aliceblue;
+    color: #d0ed57;
 }
 
+.container {
+    height: 95vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+
 #first, #second {
-    height: 100vh;
-    scroll-snap-align: start;
+    height: 90vh;
+    width: 80%;
+}
+
+#first {
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+}
+
+#first ul li {
+    color: antiquewhite;
+}
+
+#first .instruction {
+    width: 90%;
+}
+
+#first .card {
+    padding: 0 0 0 2vw;
+}
+
+#first .card h2, #second .card h2 {
+    text-align: center;
+    padding: 2vh 0;
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+}
+
+#first .card ul {
+    padding: 1.5vh;
+    font-size: .95rem;
+}
+
+#first .box {
+    text-align: center;
+}
+
+#first label {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+#first input {
+    width: 90%;
+    padding: 1vh 1vw;
+    margin: 1vh 0;
+    border-radius: .5rem;
+    cursor: pointer;
+    background: #3b3b3b;
+    border: 1px solid #d0ed57;
+}
+
+#first button {
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #d0ed57;
+    padding: 1vh 1.5vw;
+    font-size: 1.1rem;
+    font-family: 'Lato', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+    margin-top: 2vh;
+    border-radius: .5rem;
+    border: solid 1px #d0ed57;
+    transition: all .3s ease-in-out;
+}
+
+#first button:hover {
+    background-color: #3b3b3b;
+    color: #d0ed57;
 }
