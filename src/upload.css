@@ -4,6 +4,8 @@ body {
     margin: 0;
     box-sizing: border-box;
     scroll-snap-type: y mandatory;
+    background-color: #2f2d2d;
+    color: aliceblue;
 }
 
 #first, #second {

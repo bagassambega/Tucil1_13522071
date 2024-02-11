@@ -187,3 +187,24 @@ function upload() {
     reader.readAsText(file);
 }
 
+
+function download() {
+    let data = "Max Reward: " + maxReward + "\n";
+    data += "Path: ";
+    for (let i = 0; i < pathResult.length; i++) {
+        data += pathResult[i] + " ";
+    }
+    data += "\n";
+    data += "Coordinate: ";
+    for (let i = 0; i < coordinateResult.length; i++) {
+        data += "(" + (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + ") ";
+    }
+    data += "\n";
+    let blob = new Blob([data], {type: 'text/plain'});
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = 'result.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
