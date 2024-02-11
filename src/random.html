@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Random</title>
+    <link href="random.css" rel="stylesheet">
+</head>
+<body>
+    <div id="first">
+        <div class="container">
+            <div class="inputForm">
+                <label for="rowMatrix">Tinggi matriks</label>
+                <input type="number" name="rowMatrix" id="rowMatrix">
+                <label for="colMatrix">Lebar matriks</label>
+                <input type="number" name="colMatrix" id="colMatrix">
+                <label for="bufferSize">Ukuran buffer</label>
+                <input type="number" name="bufferSize" id="bufferSize">
+                <label for="token">Token (pisahkan oleh spasi)</label>
+                <input type="text" name="token" id="token">
+                <label for="numSeq">Banyak sekuens</label>
+                <input type="number" name="numSeq" id="numSeq">
+                <label for="sequenceSize">Ukuran maksimal sekuens</label>
+                <input type="number" id="sequenceSize" name="sequenceSize">
+                <button id="generate" onclick="generate()">Generate</button>
+            </div>
+        </div>
+
+        <div class="generated">
+            <div class="matrix">
+                <h3>Matriks</h3>
+                <table id="pureMatrix"></table>
+            </div>
+            <div class="sequences">
+                <h3>Sekuens</h3>
+                <p id="sequences_reward"></p>
+            </div>
+            <button id="solve" onclick="solve()"><a href="#second"> Solve </a> </button>
+        </div>
+    </div>
+
+    <div id="second">
+        <div class="result">
+            <button id="download" onclick="download()">Download solution</button>
+        </div>
+    </div>
+
+    <script src="random.js"></script>
+</body>
+</html>
