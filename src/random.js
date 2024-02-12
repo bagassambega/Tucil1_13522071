@@ -30,7 +30,6 @@ function printGenerated() {
 
     let sekuens = document.getElementById("sekuens");
     innerData = "";
-    console.log(sequences);
     for (let i = 0; i < numSequence; i++) {
         for (let j = 0; j < sequences[i].length; j++) {
             innerData += sequences[i][j] + " ";
@@ -84,17 +83,13 @@ function generate() {
 
     printGenerated();
 
-    console.log(matrix);
-    console.log(sequences);
-    console.log(rewardArray);
 }
 
 
 function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates, coordinateNow) {
-    if (currentBuffer >= 1 && currentBuffer <= bufferLength) {
+    if (currentBuffer <= bufferLength) {
         let reward = 0;
         let m = currentPath.length;
-        console.log(currentPath);
         for (let i = 0; i < sequences.length; i++) {
             let n = sequences[i].length;
             for (let j = 0; j <= m - n; j++) {
@@ -123,12 +118,12 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
     }
 
     if (currentBuffer === 0) {
-        for (let i = 0; i < matrix.length; i++) {
-            findPath(1, i, currCol, [matrix[i][currCol]], [[currRow, i]], [[i, currCol]]);
+        for (let i = 0; i < matrix[0].length; i++) {
+            findPath(1, currRow, i, [matrix[currRow][i]], [[currRow, i]], [[currRow, i]]);
         }
     }
     // Move horizontally
-    else if (currentBuffer % 2 === 0) {
+    else if (currentBuffer % 2 === 0 && currentBuffer !== 0) {
         for (let i = 0; i < matrix[currRow].length; i++) {
             let seen = false;
             for (let j = 0; j < seenCoordinates.length; j++) {
@@ -174,16 +169,17 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
     }
 }
 
-
 function solve() {
     let start = performance.now();
     maxReward = 0;
     pathResult = [];
     coordinateResult = [];
-    findPath(0, 0, 0, [], [], []);
-    console.log(maxReward);
-    console.log(pathResult);
-    console.log(coordinateResult);
+    // document.getElementById("processing").style.display = "inline";
+    // document.getElementById("processing").innerHTML = "Processing...";
+    for (let i = 0; i < matrix[0].length; i++) {
+        findPath(0, 0, i, [], [], []);
+    }
+    // document.getElementById("processing").style.display = "none";
     let end = performance.now();
     timeElapsed = end - start;
 
@@ -199,17 +195,56 @@ function solve() {
     }
     strHasil += `<br>Waktu pemrosesan: ${timeElapsed} ms`;
     document.getElementById("hasil").innerHTML = strHasil;
+
+    for (let i = 0; i < coordinateResult.length; i++) {
+        let cell = document.getElementById(`${coordinateResult[i][0]}-${coordinateResult[i][1]}`);
+        cell.style.backgroundColor = "rgb(115, 140, 0)";
+        if (i % 2 === 0) {
+            // Vertical row
+            if (i + 1 < coordinateResult.length) {
+                for (let j = Math.min(coordinateResult[i][0], coordinateResult[i + 1][0]); j <= Math.max(coordinateResult[i][0], coordinateResult[i + 1][0]); j++) {
+                    let cell = document.getElementById(`${j}-${coordinateResult[i][1]}`);
+                    cell.style.borderLeftWidth = "0.1rem";
+                    cell.style.borderRightWidth = "0.1rem";
+                    cell.style.borderLeftStyle = "solid";
+                    cell.style.borderRightStyle = "solid";
+                }
+            }
+        }
+        else {
+            // Horizontal row
+            if (i + 1 < coordinateResult.length) {
+                for (let j = Math.min(coordinateResult[i][1], coordinateResult[i + 1][1]); j <= Math.max(coordinateResult[i][1], coordinateResult[i + 1][1]); j++) {
+                    let cell = document.getElementById(`${coordinateResult[i][0]}-${j}`);
+                    cell.style.borderTopWidth = "0.1rem";
+                    cell.style.borderBottomWidth = "0.1rem";
+                    cell.style.borderTopStyle = "solid";
+                    cell.style.borderBottomStyle = "solid";
+                }
+            }
+        }
+
+        if (i === 0) {
+            cell.style.backgroundColor = "rgb(224,24,166)";
+        }
+    }
 }
 
 
 function download() {
-    let data = maxReward + "\n";
-    for (let i = 0; i < pathResult.length; i++) {
-        data += pathResult[i] + " ";
+    let data = "";
+    if (pathResult.length === 0) {
+        data += "Tidak ada solusi yang optimal\n";
     }
-    data += "\n";
-    for (let i = 0; i < coordinateResult.length; i++) {
-        data += (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + "\n";
+    else {
+        data += maxReward + "\n";
+        for (let i = 0; i < pathResult.length; i++) {
+            data += pathResult[i] + " ";
+        }
+        data += "\n";
+        for (let i = 0; i < coordinateResult.length; i++) {
+            data += (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + "\n";
+        }
     }
     data += "\n" + timeElapsed + " ms";
     let blob = new Blob([data], {type: 'text/plain'});

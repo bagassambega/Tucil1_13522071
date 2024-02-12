@@ -8,6 +8,43 @@ body {
     color: #d0ed57;
 }
 
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vh 2vw;
+    background-color: #2f2d2d;
+    text-decoration: none;
+    height: 5vh;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    height: 4vh;
+    border-radius: .3rem;
+    /*height: auto;*/
+    background-color: #d0ed57;
+}
+
+.navigation a {
+    color: #2f2d2d;
+}
+
+.navigation i {
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0 1vw;
+    transition: all .2s ease-in-out;
+}
+
+
 .container {
     height: 95vh;
     display: grid;
@@ -121,7 +158,6 @@ body {
 .content p {
     display: none;
     font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
-
 }
 
 .content {
@@ -169,8 +205,4 @@ body {
     border: solid .07rem #d0ed57;
     padding: 1vh 0 1vh 1vw;
     font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
-}
-
-canvas {
-    grid-row: span 2;
 }

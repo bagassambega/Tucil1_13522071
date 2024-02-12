@@ -14,14 +14,8 @@ var sequenceNumber;
 var timeElapsed;
 
 
-function printGenerated() {
-
-}
-
-
 function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates, coordinateNow) {
-    if (currentBuffer >= 1 && currentBuffer <= bufferLength) {
-        document.getElementById("processing").innerHTML = `Sedang memproses... (${currentPath})`;
+    if (currentBuffer <= bufferLength) {
         let reward = 0;
         let m = currentPath.length;
         for (let i = 0; i < sequences.length; i++) {
@@ -52,12 +46,12 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
     }
 
     if (currentBuffer === 0) {
-        for (let i = 0; i < matrix.length; i++) {
-            findPath(1, i, currCol, [matrix[i][currCol]], [[currRow, i]], [[i, currCol]]);
+        for (let i = 0; i < matrix[0].length; i++) {
+            findPath(1, currRow, i, [matrix[currRow][i]], [[currRow, i]], [[currRow, i]]);
         }
     }
     // Move horizontally
-    else if (currentBuffer % 2 === 0) {
+    else if (currentBuffer % 2 === 0 && currentBuffer !== 0) {
         for (let i = 0; i < matrix[currRow].length; i++) {
             let seen = false;
             for (let j = 0; j < seenCoordinates.length; j++) {
@@ -106,19 +100,25 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
 function solve() {
     document.getElementById("processing").style.display = "inline";
     let start = performance.now();
-    findPath(0, 0, 0, [], [], []);
+    document.getElementById("processing").innerHTML = `Sedang memproses...`;
+    for (let i = 0; i < matrix[0].length; i++) {
+        findPath(0, 0, i, [], [], []);
+    }
+
     let end = performance.now();
-    console.log(maxReward);
-    console.log(pathResult);
-    console.log(coordinateResult);
     timeElapsed = end - start;
     let hasil = "";
-    for (let i = 0; i < pathResult.length; i++) {
-        hasil += pathResult[i] + " ";
+    if (pathResult.length === 0) {
+        hasil = "Tidak ada solusi yang paling optimal<br>";
     }
-    hasil += `(${maxReward}) <br>`;
-    for (let i = 0; i < coordinateResult.length; i++) {
-        hasil += `(${coordinateResult[i][1] + 1}, ${coordinateResult[i][0] + 1}) `;
+    else {
+        for (let i = 0; i < pathResult.length; i++) {
+            hasil += pathResult[i] + " ";
+        }
+        hasil += `(${maxReward}) <br>`;
+        for (let i = 0; i < coordinateResult.length; i++) {
+            hasil += `(${coordinateResult[i][1] + 1}, ${coordinateResult[i][0] + 1}) `;
+        }
     }
     hasil += `<br>Waktu pemrosesan: ${timeElapsed} ms`;
     document.getElementById("sequence").innerHTML = hasil;
@@ -153,7 +153,7 @@ function solve() {
         }
 
         if (i === 0) {
-            cell.style.backgroundColor = "rgb(0,65,140)";
+            cell.style.backgroundColor = "rgb(224,24,166)";
         }
     }
 
@@ -178,7 +178,6 @@ function upload() {
             coordinateResult = [];
             const content = e.target.result;
             const lines = content.split(/\r\n|\r|\n/).map(line => line.replace(/\r|\n/g, ''))
-            console.log(lines);
             bufferLength = parseInt(lines[0]);
             let splitInt = lines[1].split(' ');
             col = parseInt(splitInt[0]);
@@ -195,10 +194,8 @@ function upload() {
             let now = row + 2;
             sequenceNumber = parseInt(lines[now]);
             now += 1;
-            console.log(now);
             for (let i = 0; i < sequenceNumber * 2; i++) {
                 if (i % 2 === 0) {
-                    console.log(lines[now + i], now + i);
                     sequences.push(lines[now + i].split(' '));
                 } else {
                     rewardArray.push(parseInt(lines[now + i]));
@@ -233,14 +230,11 @@ function upload() {
             sekuens.innerHTML = innerData;
         } catch (e) {
             document.getElementById("fileChosen").textContent = "Terdapat kesalahan pada pembacaan file!";
-            console.log(e);
+            console.log("error" + e);
             return;
         }
     };
 
-    console.log(matrix);
-    console.log(sequences);
-    console.log(rewardArray);
 
     reader.readAsText(file);
 }
@@ -248,12 +242,17 @@ function upload() {
 
 function download() {
     let data = maxReward + "\n";
-    for (let i = 0; i < pathResult.length; i++) {
-        data += pathResult[i] + " ";
+    if (pathResult.length === 0) {
+        data += "Tidak ada solusi optimal\n";
     }
-    data += "\n";
-    for (let i = 0; i < coordinateResult.length; i++) {
-        data += (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + "\n";
+    else {
+        for (let i = 0; i < pathResult.length; i++) {
+            data += pathResult[i] + " ";
+        }
+        data += "\n";
+        for (let i = 0; i < coordinateResult.length; i++) {
+            data += (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + "\n";
+        }
     }
     data += "\n";
     data += timeElapsed + " ms";
