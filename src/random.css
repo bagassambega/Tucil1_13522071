@@ -94,4 +94,46 @@ input::-webkit-inner-spin-button {
     text-align: center;
     justify-items: center;
     align-items: center;
+    font-family: 'Calibri', sans-serif;
+}
+
+#second .sekuens {
+    height: auto;
+    padding: 2vh 1vw;
+    border: solid .07rem #d0ed57;
+    font-family: 'Calibri', sans-serif;
+}
+
+#second button {
+    margin: 2vh 0;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #d0ed57;
+    padding: 1vh 1.5vw;
+    font-size: 1.1rem;
+    font-family: 'Lato', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+    border-radius: .5rem;
+    color: #3b3b3b;
+    border: solid 1px #d0ed57;
+    transition: all .3s ease-in-out;
+}
+
+#second #solve {
+    display: none;
+}
+
+#second button:hover {
+    background-color: #3b3b3b;
+    color: #d0ed57;
+}
+
+#second #result {
+    display: none;
+}
+
+#second .hasil {
+    padding: 2vh 1vw;
+    height: auto;
+    border: solid .07rem #d0ed57;
+    font-family: 'Calibri', sans-serif;
 }

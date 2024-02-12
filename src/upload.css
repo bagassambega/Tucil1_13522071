@@ -124,12 +124,16 @@ body {
 
 }
 
+.content {
+    display: grid;
+    grid-template-rows: repeat(8, auto);
+}
+
 .cell {
     font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #3d3d3d;
     width: 2.5rem;
     height: 1.5rem;
     text-align: center;
@@ -165,4 +169,8 @@ body {
     border: solid .07rem #d0ed57;
     padding: 1vh 0 1vh 1vw;
     font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+}
+
+canvas {
+    grid-row: span 2;
 }

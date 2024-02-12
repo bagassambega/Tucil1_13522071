@@ -14,8 +14,14 @@ var sequenceNumber;
 var timeElapsed;
 
 
+function printGenerated() {
+
+}
+
+
 function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates, coordinateNow) {
     if (currentBuffer >= 1 && currentBuffer <= bufferLength) {
+        document.getElementById("processing").innerHTML = `Sedang memproses... (${currentPath})`;
         let reward = 0;
         let m = currentPath.length;
         for (let i = 0; i < sequences.length; i++) {
@@ -99,9 +105,9 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
 
 function solve() {
     document.getElementById("processing").style.display = "inline";
-    let start = new Date();
+    let start = performance.now();
     findPath(0, 0, 0, [], [], []);
-    let end = new Date();
+    let end = performance.now();
     console.log(maxReward);
     console.log(pathResult);
     console.log(coordinateResult);
@@ -120,10 +126,39 @@ function solve() {
 
     for (let i = 0; i < coordinateResult.length; i++) {
         let cell = document.getElementById(`${coordinateResult[i][0]}-${coordinateResult[i][1]}`);
-        cell.style.backgroundColor = "red";
+        cell.style.backgroundColor = "rgb(115, 140, 0)";
+        if (i % 2 === 0) {
+            // Vertical row
+            if (i + 1 < coordinateResult.length) {
+                for (let j = Math.min(coordinateResult[i][0], coordinateResult[i + 1][0]); j <= Math.max(coordinateResult[i][0], coordinateResult[i + 1][0]); j++) {
+                    let cell = document.getElementById(`${j}-${coordinateResult[i][1]}`);
+                    cell.style.borderLeftWidth = "0.1rem";
+                    cell.style.borderRightWidth = "0.1rem";
+                    cell.style.borderLeftStyle = "solid";
+                    cell.style.borderRightStyle = "solid";
+                }
+            }
+        }
+        else {
+            // Horizontal row
+            if (i + 1 < coordinateResult.length) {
+                for (let j = Math.min(coordinateResult[i][1], coordinateResult[i + 1][1]); j <= Math.max(coordinateResult[i][1], coordinateResult[i + 1][1]); j++) {
+                    let cell = document.getElementById(`${coordinateResult[i][0]}-${j}`);
+                    cell.style.borderTopWidth = "0.1rem";
+                    cell.style.borderBottomWidth = "0.1rem";
+                    cell.style.borderTopStyle = "solid";
+                    cell.style.borderBottomStyle = "solid";
+                }
+            }
+        }
+
+        if (i === 0) {
+            cell.style.backgroundColor = "rgb(0,65,140)";
+        }
     }
 
-    setTimeout(function() {document.getElementById("processing").style.display = "none"}, 10000);
+
+    setTimeout(function() {document.getElementById("processing").style.display = "none"}, 100);
 }
 
 
@@ -136,6 +171,11 @@ function upload() {
 
     reader.onload = function(e) {
         try {
+            matrix = [];
+            sequences = [];
+            maxReward = 0;
+            pathResult = [];
+            coordinateResult = [];
             const content = e.target.result;
             const lines = content.split(/\r\n|\r|\n/).map(line => line.replace(/\r|\n/g, ''))
             console.log(lines);

@@ -10,6 +10,7 @@ let coordinateResult = [];
 let sequenceSize;
 let numSequence;
 let row, col;
+let timeElapsed;
 
 function printGenerated() {
     let matriks = document.getElementById("matriks");
@@ -37,6 +38,8 @@ function printGenerated() {
         innerData += ": " + rewardArray[i] + "<br>";
     }
     sekuens.innerHTML = innerData;
+
+    document.getElementById("solve").style.display = "block";
 }
 
 
@@ -91,6 +94,7 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
     if (currentBuffer >= 1 && currentBuffer <= bufferLength) {
         let reward = 0;
         let m = currentPath.length;
+        console.log(currentPath);
         for (let i = 0; i < sequences.length; i++) {
             let n = sequences[i].length;
             for (let j = 0; j <= m - n; j++) {
@@ -172,30 +176,47 @@ function findPath(currentBuffer, currRow, currCol, currentPath, seenCoordinates,
 
 
 function solve() {
+    let start = performance.now();
+    maxReward = 0;
+    pathResult = [];
+    coordinateResult = [];
     findPath(0, 0, 0, [], [], []);
     console.log(maxReward);
     console.log(pathResult);
     console.log(coordinateResult);
+    let end = performance.now();
+    timeElapsed = end - start;
+
+    document.getElementById("result").style.display = "block";
+    let strHasil = "";
+    strHasil += "Reward maksimal: " + maxReward + "<br>";
+    for (let i = 0; i < pathResult.length; i++) {
+        strHasil += pathResult[i] + " ";
+    }
+    strHasil += "<br>";
+    for (let i = 0; i < coordinateResult.length; i++) {
+        strHasil += `(${coordinateResult[i][0] + 1}, ${coordinateResult[i][1] + 1}) `;
+    }
+    strHasil += `<br>Waktu pemrosesan: ${timeElapsed} ms`;
+    document.getElementById("hasil").innerHTML = strHasil;
 }
 
 
 function download() {
-    let data = "Max Reward: " + maxReward + "\n";
-    data += "Path: ";
+    let data = maxReward + "\n";
     for (let i = 0; i < pathResult.length; i++) {
         data += pathResult[i] + " ";
     }
     data += "\n";
-    data += "Coordinate: ";
     for (let i = 0; i < coordinateResult.length; i++) {
-        data += "(" + (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + ") ";
+        data += (coordinateResult[i][1] + 1) + ", " + (coordinateResult[i][0] + 1) + "\n";
     }
-    data += "\n";
+    data += "\n" + timeElapsed + " ms";
     let blob = new Blob([data], {type: 'text/plain'});
     let url = window.URL.createObjectURL(blob);
     let a = document.createElement('a');
     a.href = url;
-    a.download = 'result.txt';
+    a.download = 'output.txt';
     a.click();
     window.URL.revokeObjectURL(url);
 }
