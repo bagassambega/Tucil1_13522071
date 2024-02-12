@@ -1,23 +1,7 @@
-<style>
-	.title {
-		text-align: center;
-	}
+<h1 class="title" style="text-align: center;">Tugas Kecil 1 Strategi Algoritma</h1> 
+<h3 class="title" style="text-align: center;">Cyberpunk 2077 Minigame Breach Protocol</h3>
 
-    .identity {
-        margin: 2rem 0 0 0;
-    }
-
-    table {
-        text-align: center;
-}
-
-
-</style>
-
-<h1 class="title">Tugas Kecil 1 Strategi Algoritma</h1> 
-<h3 class="title">Cyberpunk 2077 Minigame Breach Protocol</h3>
-
-<div class="identity">
+<div class="identity" style="margin: 2vh 0 0 0;">
 	<p>Nama	:	Bagas Sambega Rosyada</p>
 	<p>NIM		:	13522071 </p>
 </div>
@@ -38,7 +22,7 @@ Program ini bertujuan untuk mencari sekuens yang bisa menghasilkan nilai total _
 Pola pencarian yang dilakukan adalah dengan menggunakan algoritma _brute force_ atau _exhaustive search_, dalam program ini yaitu menggunakan pola rekursif untuk mencari seluruh kemungkinan kombinasi token yang ada, lalu mencari nilai _reward_ maksimum yang bisa dihasilkan.
 
 ## Deskripsi Program
-<table>
+<table style="text-align: center;">
     <tr>
         <th>GUI</th>
         <th>Styling</th>
