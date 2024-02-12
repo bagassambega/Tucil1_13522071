@@ -208,3 +208,29 @@ body {
     padding: 1vh 0 1vh 1vw;
     font-family: 'Calibri', "Segoe UI", Tahoma, Geneva, Arial, sans-serif;
 }
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    #first, #second {
+        width: 100%;
+        height: auto;
+    }
+
+    #first li {
+        font-size: .8rem;
+    }
+
+    #first label {
+        font-size: 1.2rem;
+        padding: 1vh 2vw;
+    }
+
+    #second button {
+        padding: 1vh 1.5vw;
+        font-size: .6rem;
+    }
+}
