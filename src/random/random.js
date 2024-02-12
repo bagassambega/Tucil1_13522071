@@ -174,12 +174,12 @@ function solve() {
     maxReward = 0;
     pathResult = [];
     coordinateResult = [];
-    // document.getElementById("processing").style.display = "inline";
-    // document.getElementById("processing").innerHTML = "Processing...";
+    document.getElementById("processing").style.display = "inline";
+    document.getElementById("processing").innerHTML = "Processing...";
     for (let i = 0; i < matrix[0].length; i++) {
         findPath(0, 0, i, [], [], []);
     }
-    // document.getElementById("processing").style.display = "none";
+    document.getElementById("processing").style.display = "none";
     let end = performance.now();
     timeElapsed = end - start;
 
