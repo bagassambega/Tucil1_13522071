@@ -89,3 +89,6 @@ token-token yang akan di-_generate_, banyak sekuens dan panjang maksimal sekuens
 6. Setelah semua data berhasil dimasukkan, klik tombol **Solve**.
 7. Setelah proses _solving_ selesai, hasil permainan dan _reward_ akan muncul, dan pengguna dapat memilih untuk mengunduh hasil
 permainan menjadi file `.txt`
+
+#### Note
+**Solve** pada program input acak menggunakan proses yang lebih berat dibandingkan pada mode **upload**, sehingga matriks berukuran cukup besar dapat menyebabkan _browser_ berjalan lambat. Jika hal tersebut terlanjur terjadi, tunggu hingga proses selesai atau _force refresh_ menggunakan `Ctrl + F5`.
